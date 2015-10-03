@@ -1,0 +1,237 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+<meta content="max-age=0" http-equiv="Cache-Control">
+<meta content="240" name="MobileOptimized">
+<meta content="YES" name="apple-touch-fullscreen">
+<meta content="yes" name="apple-mobile-web-app-capable">
+<meta
+	content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=no"
+	name="viewport" />
+<meta content="yes" name="apple-mobile-web-app-capable" />
+<meta content="black" name="apple-mobile-web-app-status-bar-style" />
+<meta content="telephone=no" name="format-detection" />
+
+<script src="tools/jquery-1.9.0.js"></script>
+
+<script src="src/RResource.js" type="text/javascript"></script>
+<script src="src/RBrowser.js" type="text/javascript"></script>
+<script src="src/RGeometry.js" type="text/javascript"></script>
+<script src="src/RMapOptions.js" type="text/javascript"></script>
+<script src="src/RBase.js" type="text/javascript"></script>
+<script src="src/RObject.js" type="text/javascript"></script>
+<script src="src/REvent.js" type="text/javascript"></script>
+<script src="src/RMapEvent.js" type="text/javascript"></script>
+<script src="src/RMapUtils.js" type="text/javascript"></script>
+<script src="src/RMap.js" type="text/javascript"></script>
+<script src="src/RTile.js" type="text/javascript"></script>
+<script src="src/RTileProvider.js" type="text/javascript"></script>
+<script src="src/RTileOverlay.js" type="text/javascript"></script>
+<script src="src/RMarker.js" type="text/javascript"></script>
+<script src="src/RMarkerEvent.js" type="text/javascript"></script>
+<script src="src/RMarkerOverlay.js" type="text/javascript"></script>
+<script src="src/RGraphics.js" type="text/javascript"></script>
+<script src="src/RGraphicsEvent.js" type="text/javascript"></script>
+<script src="src/RGraphicsOverlay.js" type="text/javascript"></script>
+
+
+<style>
+html, body {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	padding: 0px;
+	-ms-touch-action: manipulation;
+	touch-action: manipulation;
+	background: url("");
+}
+
+.rotate {
+	position: absolute;
+	bottom: 5px;
+	right: 5px;
+	width: 40px;
+	height: 40px;
+	text-align: center;
+	line-height: 40px;
+	background-color: #ff0000;
+	z-index: 10000000000000;
+	cursor: pointer;
+	color: #ffffff;
+}
+
+.zoomout {
+	position: absolute;
+	bottom: 95px;
+	right: 5px;
+	width: 40px;
+	height: 40px;
+	text-align: center;
+	line-height: 40px;
+	background-color: #ff0000;
+	z-index: 10000000000000;
+	cursor: pointer;
+	color: #ffffff;
+}
+
+.zoomin {
+	position: absolute;
+	bottom: 50px;
+	right: 5px;
+	width: 40px;
+	height: 40px;
+	text-align: center;
+	line-height: 40px;
+	background-color: #ff0000;
+	z-index: 10000000000000;
+	cursor: pointer;
+	color: #ffffff;
+}
+
+.center {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+}
+
+.center-text {
+	position: absolute;
+	top: -20px;
+	left: -20px;
+	width: 40px;
+	height: 40px;
+	line-height: 40px;
+	z-index: 10000000000000;
+	background: url("./img/center.png");
+}
+</style>
+</head>
+
+<body>
+	<div id="mapdiv"
+		style="position: absolute; left: 0px; top: 0px; height: 100%; width: 100%;"></div>
+	<div class="center">
+		<div class="center-text"></div>
+	</div>
+	<div class="rotate">旋转</div>
+	<div class="zoomout">放大</div>
+	<div class="zoomin">缩小</div>
+	<script language="JavaScript">
+		window.map = new RMap(document.getElementById("mapdiv"), 22.53935034375, 114.0795095, 4, $('#mapdiv').width(), $('#mapdiv').height());
+		window.map.show();
+
+		var graphics = window.map.addGraphics(new RPolyline([ {
+			lat : 23.128125,
+			lng : 113.26171875
+		}, {
+			lat : 22.53935034375,
+			lng : 114.0795095
+		} ], 50, "#f00", 0.5));
+
+		graphics.addEventListener(RGraphicsEvent.MouseClickEvent, function(evt) {
+			console.log(arguments[0]);
+			//marker.smoothTo(23.128125, 113.26171875);113.28125 , 23.121875  111.0078125 , 21.60625 
+			graphics.setPath([ {
+				lat : 23.121875,
+				lng : 113.28125
+			}, {
+				lat : 21.60625,
+				lng :  111.0078125
+			} ]);
+		});
+		/* graphics.addEventListener(RGraphicsEvent.MouseDoubleClickEvent, function(evt) {
+			console.log(arguments[0]);
+		});
+		graphics.addEventListener(RGraphicsEvent.MouseOverEvent, function(evt) {
+			console.log(arguments[0]);
+		});
+		graphics.addEventListener(RGraphicsEvent.MouseOutEvent, function(evt) {
+			console.log(arguments[0]);
+		}); */
+ 
+		/* 	var div = new RDiv(0, 0, 350, 200);
+
+			div.get().style.background = "#f00";
+
+			var marker = window.map.addMarker(new RWindowMarker(22.53935034375, 114.0795095, "<div style='background: #fff;width:350px;height:200px;'></div>", "./img/poi.png", 25, 38, -12, -38));
+			var marker = window.map.addMarker(new RWindowMarker(23.128125, 113.26171875, "<div style='background: #fff;width:350px;height:200px;'></div>", "./img/poi.png", 25, 38, -12, -38));
+
+			marker.addEventListener(RMarkerEvent.MouseClickEvent, function(evt) {
+				console.log(arguments[0]);
+				//marker.smoothTo(23.128125, 113.26171875);
+			});
+			marker.addEventListener(RMarkerEvent.LableShowEvent, function(evt) {
+				console.log(arguments[0]);
+			});
+			marker.addEventListener(RMarkerEvent.LableHideEvent, function(evt) {
+				console.log(arguments[0]);
+			}); */
+
+		angle = 0;
+		$(".rotate").click(function() {
+			window.map.rotate(angle);
+			angle = angle + 10;
+		});
+		$(".zoomout").click(function() {
+			window.map.smoothLevel(window.map.getLevel() + 1);
+		});
+		$(".zoomin").click(function() {
+			window.map.smoothLevel(window.map.getLevel() - 1);
+		});
+
+		/* window.map.addEventListener(RMapEvent.MouseClickEvent, function(evt) {
+			console.log(arguments[0]);
+		}); */
+
+		/* window.map.addEventListener(RMapEvent.MouseDoubleClickEvent, function(evt) {
+			console.log(arguments[0]);
+		});
+
+		window.map.addEventListener(RMapEvent.MouseOverEvent, function(evt) {
+			console.log(arguments[0]);
+		});
+
+		window.map.addEventListener(RMapEvent.MouseOutEvent, function(evt) {
+			console.log(arguments[0]);
+		});
+
+		window.map.addEventListener(RMapEvent.MouseDownEvent, function(evt) {
+			console.log(arguments[0]);
+		});
+
+		window.map.addEventListener(RMapEvent.MouseUpEvent, function(evt) {
+			console.log(arguments[0]);
+		});
+
+		window.map.addEventListener(RMapEvent.MouseRightButtonEvent, function(evt) {
+			console.log(arguments[0]);
+		});
+
+		window.map.addEventListener(RMapEvent.MapSizeChanged, function(evt) {
+			console.log(arguments[0]);
+		});
+
+		window.map.addEventListener(RMapEvent.MapLevelChanging, function(evt) {
+			console.log(arguments[0]);
+		});
+
+		window.map.addEventListener(RMapEvent.MapLevelChanged, function(evt) {
+			console.log(arguments[0]);
+		});
+
+		window.map.addEventListener(RMapEvent.MapMove, function(evt) {
+			console.log(arguments[0]);
+		});
+
+		window.map.addEventListener(RMapEvent.MapRotate, function(evt) {
+			console.log(arguments[0]);
+		});
+		 */
+		/* window.addEventListener("resize", function() {
+			window.map.resize(document.getElementById("mapdiv").clientWidth, document.getElementById("mapdiv").clientHeight);
+		}); */
+	</script>
+</body>
+</html>
